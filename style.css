@@ -1,0 +1,65 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.word-display {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.guess-input {
+  display: block;
+  margin: 0 auto;
+  padding: 8px;
+  font-size: 18px;
+}
+
+.guess-button {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 16px;
+  font-size: 18px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.message {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.message.error {
+  color: red;
+}
+
+.message.success {
+  color: green;
+}
+
+.remaining-guesses {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.wrong-letters {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.hangman-image {
+  display: block;
+  margin: 20px auto;
+  max-width: 300px;
+}

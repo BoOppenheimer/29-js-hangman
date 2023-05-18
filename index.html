@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="./style.css">
+  <title>Hangman Game</title>
+  </head>
+<body>
+  <h1>Hangman Game</h1>
+  <img class="hangman-image" src="./img/hangman_0.png" alt="Hangman Image">
+  <div class="word-display"></div>
+  <input type="text" class="guess-input" placeholder="Enter a letter" maxlength="1">
+  <button class="guess-button" onclick="guessLetter()">Guess</button>
+  <div class="message"></div>
+  <div class="remaining-guesses"></div>
+  <div class="wrong-letters"></div>
+
+<script>
+    var words = ['javascript', 'hangman', 'programming', 'bannans', 'bubble', 'thoughtful', 'happy'];
+    var selectedWord = '';
+    var guessedLetters = [];        
+    var remainingAttempts = 6;
+
+    function initializeGame() {
+      selectedWord = words[Math.floor(Math.random() * words.length)];
+      guessedLetters = [];
+      remainingAttempts = 6;
+      updateWordDisplay();
+      updateMessage('');
+      updateRemainingGuesses();
+      updateWrongLetters();
+    }
+
+    function updateWordDisplay() {
+      var wordDisplay = document.querySelector('.word-display');
+      var displayedWord = '';
+
+      for (var i = 0; i < selectedWord.length; i++) {
+        if (guessedLetters.includes(selectedWord[i])) {
+          displayedWord += selectedWord[i];
+        } else {
+          displayedWord += '_';
+        }
+        displayedWord += ' ';
+      }
+
+      wordDisplay.textContent = displayedWord;
+    }
+
+    function updateMessage(message, isError = false) {
+      var messageElement = document.querySelector('.message');
+      messageElement.textContent = message;
+      messageElement.style.color = isError ? 'red' : 'green';
+    }
+
+    function updateRemainingGuesses() {
+      var remainingGuessesElement = document.querySelector('.remaining-guesses');
+      remainingGuessesElement.textContent = 'Remaining Guesses: ' + remainingAttempts;
+    }
+
+    function updateWrongLetters() {
+      var wrongLettersElement = document.querySelector('.wrong-letters');
+      var wrongLetters = guessedLetters.filter(function(letter) {
+        return !selectedWord.includes(letter);
+      });
+      wrongLettersElement.textContent = 'Wrong Letters: ' + wrongLetters.join(', ');
+    }
+
+    function updateHangmanImage(attempts) {
+      var hangmanImage = document.querySelector('.hangman-image');
+      hangmanImage.src = './img/hangman_' + attempts + '.png';
+    }
+
+    function guessLetter() {
+      var guessInput = document.querySelector('.guess-input');
+      var guess = guessInput.value.toLowerCase();
+
+      if (!guess.match(/^[a-z]$/)) {
+        updateMessage('Please enter a single letter.', true);
+        return;
+      }
+
+      if (guessedLetters.includes(guess)) {
+        updateMessage('Please enter a letter you haven\'t guessed yet.', true);
+        return;
+      }
+
+      guessedLetters.push(guess);
+
+      if (selectedWord.includes(guess)) {
+        updateWordDisplay();
+
+        if (checkWin()) {
+          updateMessage('Congratulations! You won the game!');
+          disableInput();
+        }
+      } else {
+        remainingAttempts--;
+        updateRemainingGuesses();
+        updateWrongLetters();
+        updateHangmanImage(6 - remainingAttempts);
+
+        if (remainingAttempts === 0) {
+          updateMessage('Game over! The word was: ' + selectedWord, true);
+          disableInput();
+        }
+      }
+
+      guessInput.value = '';
+    }
+
+    function checkWin() {
+      for (var i = 0; i < selectedWord.length; i++) {
+        if (!guessedLetters.includes(selectedWord[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+
+    function disableInput() {
+      var guessInput = document.querySelector('.guess-input');
+      var guessButton = document.querySelector('.guess-button');
+
+      guessInput.disabled = true;
+      guessButton.disabled = true;
+    }
+
+    // Initialize the game
+    initializeGame();
+   
+</script>
+</body>
+</html>
